@@ -1,0 +1,22 @@
+# Node
+node_modules/
+dist/
+build/
+pnpm-lock.yaml
+
+# Env
+.env
+.env.*
+
+# Editor
+.vscode/
+.idea/
+.DS_Store
+
+# Logs
+*.log
+docker-data/
+
+# OS
+Thumbs.db
+
