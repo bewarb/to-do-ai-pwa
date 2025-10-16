@@ -86,6 +86,27 @@ Expected output:
 ]
 ```
 
+### Windows: Fix "running scripts is disabled" npm/pnpm error
+
+If you see this error when running npm or pnpm commands:
+
+File C:\Program Files\nodejs\npm.ps1 cannot be loaded because running scripts is disabled on this system.
+
+You need to allow trusted scripts for your current user.
+
+Fix:
+
+1. Open PowerShell as Administrator
+2. Run:
+   Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+3. When prompted, type A (Yes to All) and press Enter
+
+This permanently allows PowerShell to execute trusted scripts (like npm, pnpm, and other developer tools) for your user account. It is safe and standard for Node.js development on Windows.
+
+To revert this change later, run:
+   Set-ExecutionPolicy -ExecutionPolicy Restricted -Scope CurrentUser
+
+
 ---
 
 ##  Phase 1 Plan — MVP Development ( ~2 weeks )
