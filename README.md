@@ -86,6 +86,50 @@ Expected output:
 ]
 ```
 
+### Windows: Docker Postgres port conflict
+
+On Windows you may already have a local PostgreSQL server bound to host port 5432. That can cause tools (like `drizzle-kit` or your app) to connect to the *local* Postgres instead of the Postgres running in Docker. To avoid this conflict in this repo the Docker Postgres service is mapped to host port 5433 and the API `DATABASE_URL` in `apps/api/.env` is updated accordingly.
+
+Quick checks and options:
+
+- Check what is listening on port 5432 (PowerShell):
+
+```powershell
+netstat -aon | findstr 5432
+Get-Process -Id <PID_FROM_NETSTAT> | Select-Object Id,ProcessName,Path
+```
+
+- If you don't need the local Postgres, stop/disable it (use Services.msc or the relevant service name). After stopping it you can revert `docker-compose.yml` back to map host port 5432 and update `apps/api/.env` to use port 5432.
+
+- If you prefer not to stop the local Postgres, keep the Docker host mapping to 5433 (current default) — that's safe and avoids changing system services.
+
+This note was added after diagnosing an authentication error where the app tried to connect to 127.0.0.1:5432 and hit a different Postgres instance.
+
+### macOS: Docker Postgres port conflict (quick checks)
+
+macOS can encounter the same issue if you run a local Postgres (Homebrew, Postgres.app) that binds to host port 5432. If that happens, you can either stop the local Postgres or use the repo's fallback port 5433.
+
+Quick checks on macOS:
+
+```bash
+# show process listening on TCP port 5432
+lsof -iTCP:5432 -sTCP:LISTEN -n -P
+
+# Homebrew-managed services
+brew services list | grep postgresql
+
+# fallback: check for postgres processes
+ps aux | grep -i postgres
+```
+
+Stop or change local Postgres as needed (Homebrew example):
+
+```bash
+brew services stop postgresql
+# or for a versioned formula:
+brew services stop postgresql@14
+```
+
 ### Windows: Fix "running scripts is disabled" npm/pnpm error
 
 If you see this error when running npm or pnpm commands:

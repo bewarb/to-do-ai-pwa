@@ -7,10 +7,17 @@
   "author": "",
   "license": "ISC",
   "packageManager": "pnpm@10.18.3",
-  "workspaces": ["apps/*", "packages/*"],
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
     "dev": "pnpm -r --parallel dev",
     "build": "pnpm -r build",
     "typecheck": "pnpm -r typecheck"
+  },
+  "dependencies": {
+    "@fastify/cors": "^11.1.0",
+    "zod": "^4.1.12"
   }
 }
