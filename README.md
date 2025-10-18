@@ -162,6 +162,157 @@ This permanently allows PowerShell to execute trusted scripts (like npm, pnpm, a
 To revert this change later, run:
    Set-ExecutionPolicy -ExecutionPolicy Restricted -Scope CurrentUser
 
+## Database Setup
+
+The PostgreSQL database runs in Docker on **host port 5433** (not 5432) to avoid conflicts with local Postgres installations on Windows and macOS.
+
+### Starting the Database
+
+From the repo root:
+
+```bash
+# Start PostgreSQL in Docker
+docker compose up -d
+
+# Verify it's running
+docker ps
+
+# Check the logs
+docker compose logs -f db
+```
+
+Wait for the message: `database system is ready to accept connections`
+
+### Environment Configuration
+
+Create `apps/api/.env` (copy from `.env.example`):
+
+```bash
+# macOS/Linux
+cp apps/api/.env.example apps/api/.env
+
+# Windows (PowerShell)
+Copy-Item apps/api/.env.example apps/api/.env
+```
+
+Your `.env` should contain:
+```env
+DATABASE_URL=postgres://todo:todo@localhost:5433/todo
+JWT_SECRET=devsecret
+CORS_ORIGIN=http://localhost:3000
+PORT=4000
+```
+
+### Running Migrations with Drizzle
+
+Push the database schema to create tables:
+
+```bash
+# From repo root
+pnpm --filter @todo/api run db:push
+```
+
+Expected output:
+```
+Reading config file '.../apps/api/drizzle.config.ts'
+DATABASE_URL: postgres://todo:todo@localhost:5433/todo
+Using 'pg' driver for database querying
+[✓] Pulling schema from database...
+[✓] Changes applied
+```
+
+### Testing the Database Connection
+
+**Option 1: Using Docker exec (quick test)**
+
+```bash
+# macOS/Linux
+docker exec -it todo_db psql -U todo -d todo -c "SELECT version();"
+
+# Should return PostgreSQL version info
+```
+
+**Option 2: Using Drizzle Studio (visual UI)**
+
+```bash
+pnpm --filter @todo/api run db:studio
+```
+
+This opens a browser UI at `http://localhost:4983` where you can:
+- View all tables and data
+- Run queries
+- Edit records directly
+
+**Option 3: Test via the API**
+
+```bash
+# Start the API
+pnpm --filter @todo/api dev
+
+# In another terminal, create a task
+# macOS/Linux
+curl -X POST http://localhost:4000/tasks \
+  -H "Content-Type: application/json" \
+  -d '{"title":"Test task","description":"Testing DB connection"}'
+
+# Windows (PowerShell)
+Invoke-RestMethod -Uri http://localhost:4000/tasks -Method Post `
+  -ContentType "application/json" `
+  -Body '{"title":"Test task","description":"Testing DB connection"}'
+
+# Retrieve all tasks
+curl http://localhost:4000/tasks
+```
+
+### Troubleshooting
+
+**Problem: `DATABASE_URL: undefined`**
+
+The `.env` file isn't being loaded. Check:
+1. File exists: `ls apps/api/.env` (macOS/Linux) or `ls apps/api/.env` (Windows)
+2. File location is correct (inside `apps/api/`, not repo root)
+3. File has no BOM or encoding issues
+
+**Problem: `password authentication failed for user "todo"`**
+
+A local Postgres instance may be running on port 5432. See the port conflict sections above for macOS and Windows.
+
+**Problem: `ECONNREFUSED` connecting to database**
+
+Docker isn't running or the container didn't start:
+```bash
+docker ps                    # should show todo_db
+docker compose up -d         # start it
+docker compose logs db       # check for errors
+```
+
+### Resetting the Database
+
+To completely reset the database (deletes all data):
+
+```bash
+# Stop and remove the database container and volume
+docker compose down -v
+
+# Start fresh
+docker compose up -d
+
+# Re-run migrations
+pnpm --filter @todo/api run db:push
+```
+
+### Available Database Scripts
+
+```bash
+# Push schema changes to database (development)
+pnpm --filter @todo/api run db:push
+
+# Generate migration files (production approach)
+pnpm --filter @todo/api run db:generate
+
+# Open Drizzle Studio (database UI)
+pnpm --filter @todo/api run db:studio
+```
 
 ---
 
