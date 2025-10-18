@@ -2,21 +2,28 @@
 node_modules/
 dist/
 build/
-pnpm-lock.yaml
 
-# Env
+# Lockfiles (optional if you use pnpm consistently)
+.pnpm-store/
+.pnpm-lock.yaml
+
+# Environment
 .env
+.env.local
+.env.development
+.env.production
 .env.*
 
-# Editor
+# Editor / System
 .vscode/
 .idea/
 .DS_Store
+Thumbs.db
 
 # Logs
 *.log
 docker-data/
+pgdata/
 
-# OS
-Thumbs.db
-
+# Next.js build (for web app)
+apps/web/.next/

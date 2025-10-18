@@ -19,7 +19,7 @@ This monorepo follows **modern CI/CD standards**, uses **Next.js** for the front
 
 ---
 
-## ️ Monorepo Structure
+## Monorepo Structure
 
 ```
 todo-ai-pwa/
@@ -39,15 +39,15 @@ todo-ai-pwa/
 
 ---
 
-## ⚙️ Development Setup ( macOS & Windows )
+## Development Setup (macOS & Windows)
 
-### **1️⃣ Clone the repository**
+### 1. Clone the repository
 ```bash
 git clone https://github.com/bewarb/to-do-ai-pwa.git
 cd to-do-ai-pwa
 ```
 
-### **2️⃣ Install dependencies**
+### 2. Install dependencies
 ```bash
 # On both macOS & Windows
 pnpm install
@@ -58,15 +58,25 @@ If you haven’t enabled Corepack yet:
 corepack enable
 ```
 
-### **3️⃣ Run the backend (API)**
+### 3. Run the backend (API)
 ```bash
 pnpm --filter api dev
 ```
-- Starts Fastify on [http://localhost:8080](http://localhost:8080)
-- Health check: `GET /healthz → { "ok": true }`
-- Sample route: `GET /tasks → returns demo tasks`
+Starts Fastify on http://localhost:8080
 
-### **4️⃣ Run the frontend (Web App)**
+- Health check example:
+```bash
+curl -s http://localhost:8080/healthz
+```
+
+Response:
+```json
+{ "ok": true }
+```
+
+Test route: GET /tasks — returns demo tasks
+
+### 4. Run the frontend (Web App)
 In a new terminal:
 ```bash
 pnpm --filter web dev
@@ -74,7 +84,7 @@ pnpm --filter web dev
 - Starts Next.js dev server on [http://localhost:3000](http://localhost:3000)
 - The PWA will later fetch and display tasks from the API
 
-### **5️⃣ Verify connectivity**
+### 5. Verify connectivity
 ```bash
 curl http://localhost:8080/tasks
 ```
@@ -107,7 +117,9 @@ This note was added after diagnosing an authentication error where the app tried
 
 ### macOS: Docker Postgres port conflict (quick checks)
 
-macOS can encounter the same issue if you run a local Postgres (Homebrew, Postgres.app) that binds to host port 5432. If that happens, you can either stop the local Postgres or use the repo's fallback port 5433.
+macOS can encounter the same issue if you run a local Postgres (Homebrew, Postgres.app) that 
+binds to host port 5432. If that happens, you can either stop the local Postgres or use the 
+repo fallback port 5433.
 
 Quick checks on macOS:
 
@@ -161,7 +173,7 @@ To revert this change later, run:
 |  **API Integration** | Connect frontend to `/tasks` endpoint and render list | Dev (Briana) | In Progress |
 |  **Task Model** | CRUD operations (Create/Read/Update/Delete) for tasks | Backend | Planned |
 |  **Persistence Layer** | Connect to SQLite/Postgres via Prisma ORM | Backend | Planned |
-| ⚙️ **CI/CD Pipeline** | Add GitHub Actions for build + lint + test | Infra | Planned |
+| CI/CD Pipeline | Add GitHub Actions for build + lint + test | Infra | Planned |
 |  **PWA Features** | Installable, offline support, push notifications | Frontend | Planned |
 
 **MVP Outcome:**  
