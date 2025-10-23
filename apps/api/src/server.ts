@@ -1,6 +1,8 @@
 // api/src/server.ts
-import "dotenv/config";              // load .env
+import "dotenv/config"; // load .env
 import { buildApp } from "./app";
+
+export const buildServer = buildApp;
 
 async function start() {
   const app = await buildApp();
@@ -16,4 +18,6 @@ async function start() {
   }
 }
 
-start();
+if (require.main === module) {
+  start();
+}

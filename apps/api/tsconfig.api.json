@@ -9,9 +9,9 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "types": ["node"]
+    "types": ["node", "vitest/globals"] 
   },
-  "include": ["src"],
+  "include": ["src", "tests"],
   "ts-node": {
     "files": true
   },

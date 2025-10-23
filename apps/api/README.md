@@ -176,6 +176,85 @@ Invoke-RestMethod -Uri "http://localhost:4000/tasks/$ID" -Method Delete `
 
 ---
 
+## Testing
+
+This API uses Vitest and Supertest with an isolated PostgreSQL database for integration tests.
+
+### Prerequisites
+
+* PostgreSQL running locally (same instance as development)
+* A dedicated test database named `todo_test`
+* `pnpm` installed
+
+**Security Note:** The test database uses the same credentials as development. Ensure `todo_test` is completely separate from your development database to prevent accidental data loss.
+
+### Environment Configuration
+
+Create `apps/api/.env.test`:
+
+```env
+DATABASE_URL=postgres://todo:todo@127.0.0.1:5433/todo_test
+JWT_SECRET=dev-secret
+PORT=0
+```
+
+### Configuration Files
+
+* `apps/api/vitest.config.ts` - Vitest test runner configuration
+* `apps/api/tests/setup.ts` - Test setup and teardown hooks
+
+### How It Works
+
+The test setup:
+1. Loads `.env.test` before initializing the database connection
+2. Runs `drizzle-kit push` to apply the schema to the test database
+3. Truncates all tables and resets IDs using `TRUNCATE ... RESTART IDENTITY` for isolated test runs
+
+### NPM Scripts
+
+Add these scripts to `apps/api/package.json`:
+
+```json
+{
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "db:push:test": "cross-env NODE_ENV=test DRIZZLE_ENV=test drizzle-kit push --config=drizzle.config.ts"
+  }
+}
+```
+
+### Running Tests
+
+Run all tests once:
+```bash
+pnpm --filter @todo/api run test
+```
+
+Run tests in watch mode:
+```bash
+pnpm --filter @todo/api run test:watch
+```
+
+Expected output on success:
+```
+✓ tests/tasks.test.ts (5 tests) 123ms
+Test Files  1 passed (1)
+     Tests  5 passed (5)
+```
+
+### Important Notes
+
+* **Avoid dotenv conflicts:** If your `src/server.ts` imports `dotenv/config`, guard it to prevent conflicts with test environment variables:
+
+  ```typescript
+  if (process.env.NODE_ENV !== "test") {
+    await import("dotenv/config");
+  }
+  ```
+
+* **Schema changes:** The test setup truncates the `tasks` table. As your schema grows, add additional tables to the TRUNCATE statement in `tests/setup.ts` to maintain test isolation.
+
 ## Current Implementation Status
 
 **Completed Features:**
