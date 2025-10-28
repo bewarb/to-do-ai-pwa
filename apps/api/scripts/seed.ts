@@ -15,7 +15,7 @@ async function main() {
     { title: "CRUD endpoints", status: "in_progress", description: "POST/PATCH/DELETE routes",  /* createdAt: now */ },
     { title: "Connect frontend", status: "todo",     description: "Render tasks in Next.js",     /* createdAt: now */ },
   ]);
-  console.log("Seeded sample tasks ✅");
+  console.log("Seeded sample tasks ");
 }
 main().catch((e) => {
   console.error(e);
