@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import type { AxiosError } from "axios"; // ✅ Added for proper error typing
 import { createTask, fetchTasks, Task } from "@/lib/tasks";
 import { TodoList } from "@/components/TodoList";
 import { SignIn } from "@/components/SignIn";
@@ -11,7 +12,7 @@ export default function TasksView() {
   const [darkMode, setDarkMode] = useState(false);
 
   // Fetch tasks from backend
-  const { data, isLoading, isError, error } = useQuery<Task[]>({
+  const { data, isError, error } = useQuery<Task[], AxiosError>({
     queryKey: ["tasks"],
     queryFn: fetchTasks,
   });
@@ -64,26 +65,21 @@ export default function TasksView() {
     create.mutate({ title: title.trim() });
   }
 
-  // Temporary delete handler (can wire backend later)
+  // Temporary delete handler
   function handleDelete(id: number) {
     console.log("Delete task:", id);
   }
 
   // 401 unauthorized → show Sign-In page
-  if (isError && (error as any)?.response?.status === 401) {
+  if (isError && error?.response?.status === 401) {
     return (
-      <SignIn
-        darkMode={darkMode}
-        onToggleDarkMode={() => setDarkMode((prev) => !prev)}
-      />
+      <SignIn />
     );
   }
 
-  // Pass backend data + logic into Figma-styled layout
+  // Main layout
   return (
     <TodoList
-      darkMode={darkMode}
-      onToggleDarkMode={() => setDarkMode((prev) => !prev)}
       tasks={data ?? []}
       onAddTask={handleAdd}
       onDeleteTask={handleDelete}

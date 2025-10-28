@@ -1,9 +1,11 @@
-import type { NextConfig } from "next";
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  reactStrictMode: true,
+  turbopack: {
+    // Optional: configure things like resolve or minify later
+  },
   experimental: {
-    optimizeCss: false, // disables LightningCSS for now
+    optimizeCss: false, // still valid
   },
 };
 

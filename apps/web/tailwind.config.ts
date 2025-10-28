@@ -1,5 +1,6 @@
 import type { Config } from "tailwindcss";
 import plugin from "tailwindcss/plugin";
+import tailwindcssAnimate from "tailwindcss-animate";
 
 const config: Config = {
   darkMode: ["class"],
@@ -33,8 +34,7 @@ const config: Config = {
         sidebar: "oklch(var(--sidebar))",
         "sidebar-foreground": "oklch(var(--sidebar-foreground))",
         "sidebar-primary": "oklch(var(--sidebar-primary))",
-        "sidebar-primary-foreground":
-          "oklch(var(--sidebar-primary-foreground))",
+        "sidebar-primary-foreground": "oklch(var(--sidebar-primary-foreground))",
         "sidebar-accent": "oklch(var(--sidebar-accent))",
         "sidebar-accent-foreground": "oklch(var(--sidebar-accent-foreground))",
         "sidebar-border": "oklch(var(--sidebar-border))",
@@ -53,7 +53,7 @@ const config: Config = {
     },
   },
   plugins: [
-    require("tailwindcss-animate"),
+    tailwindcssAnimate,
     plugin(({ addVariant }) => {
       addVariant("dark", "&:is(.dark *)");
     }),

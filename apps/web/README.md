@@ -1,36 +1,136 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# To-Do AI PWA – Frontend (/apps/web)
+
+This is the frontend of the To-Do AI Progressive Web App (PWA), built with Next.js 15, React 19, Tailwind CSS 4, and ShadCN UI.  
+It connects to a Fastify + Drizzle + PostgreSQL backend and provides the user-facing task management interface.
+
+---
+
+## Features
+
+### Phase 3 – Completed
+- Connected Tasks page using React Query + Axios (CRUD with optimistic create)
+- Dark/light theme switching via `next-themes`
+- Responsive, accessible UI built with ShadCN UI
+- Smooth animations using Framer Motion
+- Consistent design system and color palette
+- Calendar and time pickers implemented (UI only, not yet persisted)
+
+### Phase 4 and Later – Planned
+- Persist due date and time to the backend
+- Task completion toggle (PATCH `/tasks/:id`)
+- Toast feedback using `sonner`
+- Skeleton loading states
+- PWA installability and offline caching
+
+---
+
+## Tech Stack
+
+| Layer | Technology |
+|-------|-------------|
+| Framework | Next.js 15 (App Router) |
+| Language | TypeScript 5 |
+| Styling | Tailwind CSS 4 |
+| Components | ShadCN UI |
+| State/Data | React Query v5 + Axios |
+| Animations | Framer Motion v11 |
+| Theme | next-themes |
+| Package Manager | pnpm 8 |
+| Environment | Monorepo with `/apps/api` backend |
+
+---
+
+## Directory Structure
+
+web/
+├── components/
+│   ├── TodoList.tsx          # Main task list component
+│   ├── SignIn.tsx            # Placeholder for unauthenticated users
+│   ├── Providers.tsx         # React Query + Theme providers
+│   └── ui/                   # ShadCN UI components
+├── lib/
+│   ├── api.ts                # Axios instance / API client
+│   └── tasks.ts              # React Query hooks for CRUD
+├── src/app/
+│   ├── layout.tsx            # Root layout with Providers
+│   ├── page.tsx              # Landing page
+│   └── tasks/
+│       ├── page.tsx          # Tasks route entry
+│       └── view.tsx
+└── tailwind.config.ts
+
+---
 
 ## Getting Started
 
-First, run the development server:
+1. Install dependencies
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+   pnpm install
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Create environment file
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+   Create `.env.local` in `/apps/web`:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+   NEXT_PUBLIC_API_BASE_URL=http://localhost:4000
 
-## Learn More
+3. Run the development server
 
-To learn more about Next.js, take a look at the following resources:
+   pnpm dev --filter @todo/web
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+   Then open http://localhost:3000.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+4. Run the backend (from project root)
 
-## Deploy on Vercel
+   pnpm dev --filter @todo/api
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+   Ensure Postgres is running:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+   docker compose up -d
+
+---
+
+## Development Notes
+
+- UI components are located in `/components/ui` (generated with `shadcn add`).
+- Global providers for React Query and themes are set in `Providers.tsx`.
+- API logic is abstracted into `/lib/api.ts` and `/lib/tasks.ts`.
+- Use `motion.div` for transitions and subtle animations.
+- The project uses strict TypeScript settings and lint rules shared across the monorepo.
+
+---
+
+## Build and Deploy
+
+To build for production:
+
+pnpm build --filter @todo/web
+pnpm start --filter @todo/web
+
+Set production environment variables:
+
+NEXT_PUBLIC_API_BASE_URL=https://api.yourdomain.com
+
+This app can be deployed on Vercel or any Next.js-compatible hosting platform.
+
+---
+
+## Phase Milestones
+
+| Phase | Title | Status |
+|-------|--------|--------|
+| 1 | Persistence & Env | Done |
+| 2 | Auth & Tasks CRUD API | Done |
+| 3 | Frontend Tasks Screen | Done |
+| 4 | PWA Install + Offline + Polish | Upcoming |
+| 5 | Real-Time Sync | Upcoming |
+| 6 | AI Assist (Prioritization) | Upcoming |
+| 7 | CI + Tests + Quality Gates | Upcoming |
+| 8 | Production Deploy | Upcoming |
+
+---
+
+## Summary
+
+The `/apps/web` project delivers a production-ready MVP for task management:  
+a connected, theme-aware, animated interface that synchronizes with the Fastify backend.  
+Phase 4 will extend persistence for date/time, add offline behavior, and polish the PWA experience.
