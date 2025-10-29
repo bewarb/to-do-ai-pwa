@@ -1,15 +1,13 @@
 "use client";
 
-import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import type { AxiosError } from "axios"; // ✅ Added for proper error typing
 import { createTask, fetchTasks, Task } from "@/lib/tasks";
-import { TodoList } from "@/components/TodoList";
+import { TodoList } from "@/components/todo";
 import { SignIn } from "@/components/SignIn";
 
 export default function TasksView() {
   const qc = useQueryClient();
-  const [darkMode, setDarkMode] = useState(false);
 
   // Fetch tasks from backend
   const { data, isError, error } = useQuery<Task[], AxiosError>({

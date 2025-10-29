@@ -1,6 +1,7 @@
 import './globals.css';
 import Providers from '@/components/Providers';
 
+
 export const metadata = {
   title: 'To-Do AI PWA',
   description: 'AI-assisted task manager',
