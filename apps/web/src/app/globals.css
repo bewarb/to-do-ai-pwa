@@ -194,6 +194,8 @@
 
 html {
   font-size: var(--font-size);
+  color-scheme: light dark;
+  transition: background 0.2s ease, color 0.2s ease;
 }
 
 @layer components {

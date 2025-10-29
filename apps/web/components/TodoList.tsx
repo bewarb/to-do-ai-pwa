@@ -2,7 +2,7 @@
 
 import { motion } from 'motion/react';
 import { useTheme } from 'next-themes';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
@@ -30,6 +30,10 @@ interface TodoListProps {
 export function TodoList({ tasks, onAddTask, onDeleteTask }: TodoListProps) {
   const { theme, setTheme } = useTheme();
   const darkMode = theme === 'dark';
+
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+
 
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
   const [selectedTime, setSelectedTime] = useState<string>('12:00');
@@ -69,14 +73,16 @@ export function TodoList({ tasks, onAddTask, onDeleteTask }: TodoListProps) {
               <Download className="w-4 h-4" />
               <span className="hidden lg:inline">Export</span>
             </Button>
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={() => setTheme(darkMode ? 'light' : 'dark')}
-              className="border-gray-300 dark:border-gray-700 dark:hover:bg-gray-800"
-            >
-              {darkMode ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
-            </Button>
+            {mounted && (
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={() => setTheme(darkMode ? 'light' : 'dark')}
+                className="border-gray-300 dark:border-gray-700 dark:hover:bg-gray-800"
+              >
+                {darkMode ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+              </Button>
+            )}
             <Button
               variant="outline"
               className="gap-2 border-gray-300 dark:border-gray-700 dark:hover:bg-gray-800 dark:text-gray-300"
