@@ -1,7 +1,9 @@
 {
+  "id": "/tasks",
   "name": "To-Do AI PWA",
   "short_name": "To-Do AI",
-  "start_url": "/",
+  "start_url": "/tasks",
+  "scope": "/tasks",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#0f172a",

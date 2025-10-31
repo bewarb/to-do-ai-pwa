@@ -1,103 +1,120 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
+import Link from "next/link";
+import { motion } from "motion/react";
+import { Button } from "@/components/ui/button";
+
+export default function HomePage() {
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <main className="min-h-screen flex flex-col bg-gradient-to-b from-gray-950 to-gray-900 text-white">
+      {/* Hero Section */}
+      <section className="flex flex-col items-center justify-center flex-grow px-6 py-24 text-center">
+        <motion.h1
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="text-5xl font-extrabold mb-4"
+        >
+          To-Do AI
+        </motion.h1>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.3 }}
+          className="text-lg text-gray-400 max-w-xl mb-8"
+        >
+          The intelligent, offline-ready task manager that adapts to your day.
+        </motion.p>
+
+        <div className="flex gap-4">
+          <Link href="/tasks">
+            <Button size="lg" className="bg-blue-600 hover:bg-blue-700">
+              Get Started
+            </Button>
+          </Link>
+          <Link href="#features">
+            <Button size="lg" variant="outline" className="border-gray-600 hover:bg-gray-800">
+              Learn More
+            </Button>
+          </Link>
+        </div>
+      </section>
+
+      {/* Features Section */}
+      <section id="features" className="py-24 bg-gray-950">
+        <div className="max-w-6xl mx-auto px-6 text-center">
+          <h2 className="text-3xl font-bold mb-12">Features</h2>
+
+          <div className="grid md:grid-cols-3 gap-12">
+            <Feature
+              title="📱 Works Offline"
+              description="Access and manage tasks anytime — even without internet."
             />
-            Deploy now
-          </a>
+            <Feature
+              title="🤖 AI Prioritization"
+              description="Automatically ranks your tasks based on urgency and time."
+            />
+            <Feature
+              title="⚡ Real-Time Sync"
+              description="Stay up to date across all your devices instantly."
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* About Section */}
+      <section id="about" className="py-24 bg-gray-900 border-t border-gray-800">
+        <div className="max-w-5xl mx-auto px-6 text-center">
+          <h2 className="text-3xl font-bold mb-6">About To-Do AI</h2>
+          <p className="text-gray-400 text-lg leading-relaxed">
+            To-Do AI was built to rethink productivity — blending intelligent
+            task scheduling with an offline-first experience. Whether you’re on
+            a plane, in a meeting, or juggling multiple deadlines, your tasks
+            stay accessible, adaptive, and in sync.
+          </p>
+        </div>
+      </section>
+
+      {/* CTA Banner */}
+      <section className="py-16 bg-blue-600 text-center">
+        <h3 className="text-2xl font-semibold mb-4">Ready to boost your focus?</h3>
+        <Link href="/tasks">
+          <Button size="lg" className="bg-white text-blue-600 hover:bg-gray-100">
+            Open the App
+          </Button>
+        </Link>
+      </section>
+
+      {/* Footer */}
+      <footer className="py-8 text-center text-gray-500 text-sm bg-gray-950 border-t border-gray-800">
+        <p>© {new Date().getFullYear()} To-Do AI PWA. Built with Next.js + Fastify.</p>
+        <div className="mt-2">
           <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
+            href="https://github.com/bewarb/to-do-ai-pwa"
             target="_blank"
             rel="noopener noreferrer"
+            className="underline hover:text-gray-300"
           >
-            Read our docs
+            View on GitHub
           </a>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
       </footer>
+    </main>
+  );
+}
+
+function Feature({
+  title,
+  description,
+}: {
+  title: string;
+  description: string;
+}) {
+  return (
+    <div className="flex flex-col items-center">
+      <h3 className="text-xl font-semibold mb-2">{title}</h3>
+      <p className="text-gray-400">{description}</p>
     </div>
   );
 }
